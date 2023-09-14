@@ -1,0 +1,59 @@
+
+body {
+  background-image: linear-gradient(#615dad, #ffc8da);
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.karta {
+  width: 300px;
+  height: auto;
+  background-color: #283e50;
+  border-radius: 1% 1% 0% 0%;
+}
+
+.karta__obrazek {
+  width: 100%;
+  border-radius: 2% 2% 0% 0%;
+}
+.karta__nadpis {
+  text-align: center;
+  font-family: 'Lobster', cursive;
+  color: #ffffff;
+}
+.karta__text {
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  padding: 0 10px 20px 10px;
+  font-size: small;
+  line-height: 1.5;
+}
+.karta__buttons {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1px;
+  
+}
+.karta__button {
+  text-decoration: none;
+  padding: 15px;
+  color: #ffffff;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.karta__button--pravidla {
+  background-color: #1fcca4;
+}
+.karta__button--pravidla:hover {
+  background-color: #1cbb96;
+}
+.karta__button--start {
+  background-color: #0197f6 
+  ;
+}
+.karta__button--start:hover {
+  background-color: #0090e9;
+}
