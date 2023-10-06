@@ -84,3 +84,19 @@ body {
 .hra__pole:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
+
+
+.board__field--circle {
+  background-image: url('obrazky_hra/circle.black.svg');
+  background-repeat: no-repeat;
+  background-size: 75%;
+  background-position: center;
+}
+
+.board__field--cross {
+  background-image: url('obrazky_hra/cross.black.svg');
+  background-repeat: no-repeat;
+  background-size: 75%;
+  background-position: center;
+}
+
