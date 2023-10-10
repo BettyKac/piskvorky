@@ -85,12 +85,30 @@ body {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
+@keyframes vyjetiSymbolu {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 
+@keyframes vyjetiSymbolu {
+  0% {
+    background-size: 0%;
+  }
+
+  100% {
+    background-size: 80%;
+  }
+}
 .board__field--circle {
   background-image: url('obrazky_hra/circle.black.svg');
   background-repeat: no-repeat;
   background-size: 75%;
   background-position: center;
+  animation: vyjetiSymbolu 0.15s;
 }
 
 .board__field--cross {
@@ -98,5 +116,8 @@ body {
   background-repeat: no-repeat;
   background-size: 75%;
   background-position: center;
+  animation: vyjetiSymbolu 0.15s;
 }
+
+
 

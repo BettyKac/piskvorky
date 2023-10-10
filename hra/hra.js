@@ -1,31 +1,63 @@
+import { findWinner } from 'https://unpkg.com/piskvorky@0.1.4'
+
 let currentPlayer = 'circle'
+
+// vybrání všech herních buttonu a přidání textového pole co nebude vidět, nastaveno pro všechny tlačítka na '_'.
+
+const allbuttonsElement = document.querySelectorAll('.hra__pole')
+allbuttonsElement.forEach((button) => {
+  button.textContent = '_';
+  button.style.color = 'transparent';
+});
+ 
+//rozšířeno o přidávání textového contentu po každém kliknutí na 'o','x'
+
 const obrazekCircle = document.querySelector('.hra__obrazek--circle')
 const zpracujKlikuti = (event) => {
-  event.target.disabled = true
+  const button = event.target;
+  button.disabled = true;
   event.target.classList.add(`board__field--${currentPlayer}`)
+  
   if (currentPlayer === 'circle') {
     currentPlayer = 'cross';
     obrazekCircle.src = 'obrazky_hra/cross.svg';
     obrazekCircle.alt = 'cross';
-  } else {
+    button.textContent = 'o'
+      } else {
     currentPlayer = 'circle';
     obrazekCircle.src = 'obrazky_hra/circle.svg';
     obrazekCircle.alt = 'circle';
+    button.textContent = 'x'
   }
+  //DOM element vybraný pomoci All převeden na pole a přidána fce findWinner s bonusem
+
+  const herniPole = Array.from(allbuttonsElement)
+  const textPole = herniPole.map((button) => { return button.textContent 
+  })
+ 
+  const vitez = findWinner(textPole)
+  if (vitez === 'o' || vitez === 'x') {
+    const endWinner = () => {
+      alert(`Vyhrál hráč se symbolem: ${vitez}!`)
+      window.location.reload()
+  }
+      setTimeout(endWinner, 500)
+   
+    } else if (vitez === 'tie') {
+    const endTie = () => {alert('Hra skončila remízou.')
+    window.location.reload()
+    }
+    setTimeout(endTie, 500)
+  }
+  // console.log(textPole) - pro kontrolu změn v herním poli
 }
 
-document.querySelector('button:nth-child(1)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(2)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(3)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(4)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(5)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(6)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(7)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(8)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(9)').addEventListener('click', zpracujKlikuti)
-document.querySelector('button:nth-child(10)').addEventListener('click', zpracujKlikuti)
+allbuttonsElement.forEach((button) => 
+button.addEventListener('click', zpracujKlikuti)
+)
 
-// bonus
+
+//reset
 const hraRestart = document.querySelector('.hra__button--restart')
 
 
