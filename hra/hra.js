@@ -1,8 +1,8 @@
 import { findWinner } from 'https://unpkg.com/piskvorky@0.1.4'
 
 let currentPlayer = 'circle'
+let gameEnded = false;
 
-// vybrání všech herních buttonu a přidání textového pole co nebude vidět, nastaveno pro všechny tlačítka na '_'.
 
 const allbuttonsElement = document.querySelectorAll('.hra__pole')
 allbuttonsElement.forEach((button) => {
@@ -10,10 +10,42 @@ allbuttonsElement.forEach((button) => {
   button.style.color = 'transparent';
 });
  
-//rozšířeno o přidávání textového contentu po každém kliknutí na 'o','x'
+const makeAiMove = async (textPole) => {
+   allbuttonsElement.forEach((button) => {
+    button.disabled = true;
+  });
+
+  const enableEmptyFields = () => {
+    allbuttonsElement.forEach((button, index) => {
+      if (textPole[index] !== 'o' && textPole[index] !== 'x') {
+        button.disabled = false;
+      }
+    });
+  };
+
+  const response = await fetch('https://piskvorky.czechitas-podklady.cz/api/suggest-next-move', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      board: textPole,
+      player: 'x',
+    }),
+  });
+  
+  const data = await response.json();
+  const { x, y } = data.position;
+  const field = allbuttonsElement[x + y * 10];
+  enableEmptyFields();
+  field.click();
+};
+
 
 const obrazekCircle = document.querySelector('.hra__obrazek--circle')
-const zpracujKlikuti = (event) => {
+const zpracujKlikuti = async (event) => {
+  if (gameEnded) return; 
+
   const button = event.target;
   button.disabled = true;
   event.target.classList.add(`board__field--${currentPlayer}`)
@@ -23,13 +55,12 @@ const zpracujKlikuti = (event) => {
     obrazekCircle.src = 'obrazky_hra/cross.svg';
     obrazekCircle.alt = 'cross';
     button.textContent = 'o'
-      } else {
+    } else {
     currentPlayer = 'circle';
     obrazekCircle.src = 'obrazky_hra/circle.svg';
     obrazekCircle.alt = 'circle';
     button.textContent = 'x'
   }
-  //DOM element vybraný pomoci All převeden na pole a přidána fce findWinner s bonusem
 
   const herniPole = Array.from(allbuttonsElement)
   const textPole = herniPole.map((button) => { return button.textContent 
@@ -37,6 +68,7 @@ const zpracujKlikuti = (event) => {
  
   const vitez = findWinner(textPole)
   if (vitez === 'o' || vitez === 'x') {
+    gameEnded = true;
     const endWinner = () => {
       alert(`Vyhrál hráč se symbolem: ${vitez}!`)
       window.location.reload()
@@ -44,12 +76,15 @@ const zpracujKlikuti = (event) => {
       setTimeout(endWinner, 500)
    
     } else if (vitez === 'tie') {
+    gameEnded = true;
     const endTie = () => {alert('Hra skončila remízou.')
     window.location.reload()
     }
     setTimeout(endTie, 500)
   }
-  // console.log(textPole) - pro kontrolu změn v herním poli
+  if (currentPlayer === 'cross' && !gameEnded) {
+    await makeAiMove(textPole);
+  }
 }
 
 allbuttonsElement.forEach((button) => 
@@ -57,7 +92,6 @@ button.addEventListener('click', zpracujKlikuti)
 )
 
 
-//reset
 const hraRestart = document.querySelector('.hra__button--restart')
 
 
